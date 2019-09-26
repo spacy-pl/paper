@@ -1,0 +1,7 @@
+md5: be3c5e43dede2f5861e79b28ce08fd93
+outs:
+- cache: true
+  md5: 630ee9a7fb7070ced69932458557aff6
+  metric: false
+  path: data/raw/cc.pl.300.vec.gz
+  persist: false

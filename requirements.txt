@@ -1,3 +1,4 @@
+spacy
 click
 nltk
 dvc==0.59.2
