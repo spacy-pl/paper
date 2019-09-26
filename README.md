@@ -19,7 +19,8 @@ Key folders & their intended use:
 │   ├── ner  # named entity recognizers
 │   └── pos  # part of speech taggers
 ├── notebooks  # Jupyter notebooks performing analysis
-└── src  # all python source code (scripts and modules)
+├── scripts  # useful bash scripts
+└── spacy_pl  # all python source code (scripts and modules)
 ```
 
 Let's keep the repo as clean as possible - in case you feel a new folder is necessary,

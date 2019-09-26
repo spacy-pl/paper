@@ -1,0 +1,11 @@
+cmd: unzip data/raw/NKJP_1.2_nltk.zip -d data/raw
+deps:
+- md5: 1d4c026ae9a8911a6e38631b8d2c465e
+  path: data/raw/NKJP_1.2_nltk.zip
+md5: 3d35cdf638b500c44e67575183a99353
+outs:
+- cache: true
+  md5: 4e0a78c1ae3d334f84cf2f98b47cae85.dir
+  metric: false
+  path: data/raw/NKJP_1.2_nltk
+  persist: false
