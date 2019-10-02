@@ -1,0 +1,13 @@
+cmd: python spacy_pl/tagset/generate_tagset_and_conversion_map.py
+deps:
+- md5: 4e0a78c1ae3d334f84cf2f98b47cae85.dir
+  path: data/raw/NKJP_1.2_nltk
+- md5: 588b5eccaaea7f8caf3aad8d1fb44dd9.dir
+  path: spacy_pl/tagset
+md5: b5215e76b05b1de843c16602695ab071
+outs:
+- cache: true
+  md5: 260f382fcf31db5c11c07670d662ab66.dir
+  metric: false
+  path: data/processed/tagset
+  persist: false

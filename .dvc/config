@@ -1,0 +1,4 @@
+['remote "gc"']
+url = gs://spacy-pl-paper-dvc-storage
+[core]
+remote = gc
