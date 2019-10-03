@@ -76,6 +76,8 @@ This way we'll create a nice knowledge base and speed up our work in the future.
 2. Find the google cloud key (let's name it `gc-key.json`) and place it in `path/to/a/folder/of/your/choice/`
 3. In a shell from which you wish to use dvc, run `export GOOGLE_APPLICATION_CREDENTIALS=path/to/a/folder/of/your/choice/gc-key.json`
    (on Windows, in CMD, run: `set GOOGLE_APPLICATION_CREDENTIALS=path/to/a/folder/of/your/choice/gc-key.json`) 
+   
+Extra TIP: If you're using pycharm, make sure to [mark .dvc folder as excluded](https://stackoverflow.com/a/6535511) - otherwise it will keep indexing your dvc files (including cache).
 
 
 ### What should I do when creating a new branch for my task?
