@@ -1,3 +1,9 @@
+Replace 8888 with the related github issue number to enable automation:
+closes: #8888
+
+Don't change the text below, it will create checklists after you submit the form :)
+
+
 **Checklist before requesting the review:**
 
 - [ ] I checked that all experiments are organized in a dvc pipeline
@@ -5,8 +11,6 @@
 - [ ] I listed and all outputs in every dvc file
 - [ ] I ran `dvc commit` to check if dvc files reflect the state of my data
 - [ ] I successfully ran `dvc push` before opening this pull request
-
-Remember to add comment "closes #issue-number" after opening this PR to enable automation :)
 
 
 **Checklist for reviewer:**
