@@ -14,10 +14,10 @@ Key folders & their intended use:
 │   ├── processed  # outputs of pipeline steps - intermediate or final
 │   └── raw  # data downloaded from sources
 ├── models
-│   ├── dep  # dependency parser models
 │   ├── mixed  # models performing more than 1 task
 │   ├── ner  # named entity recognizers
-│   └── pos  # part of speech taggers
+│   ├── pos  # part of speech taggers
+│   └── trees  # dependency parsers
 ├── notebooks  # Jupyter notebooks performing analysis
 ├── scripts  # useful bash scripts
 └── spacy_pl  # all python source code (scripts and modules)
@@ -51,9 +51,11 @@ docstring at the beginning to explain what they do.
 ### Naming
 
 `.dvc` files should always be named by `<verb>_<noun(s) separated by "_">` - an action
-and its output(s).
-For example: `create_pos_nkjp_word2vec.dvc` or `train_pos_nkjp_word2vec.dvc` or `benchmark_pos_nkjp_word2vec.dvc` or `package_pos_dep_ner_v1.0.1.dvc` - in case of models.
-For scripts: `unpack_nkjp`, `merge_nkjp_pos` or `convert_spacy_pos`.
+and its output(s). Verbs vocabulary:
+- `add`: first step in the pipeline, adds new data from external source
+- `generate`: generates a piece of processed data from previously added data sources
+- `cv`: creates a model using cross-validation on one dataset
+- `train`: creates a model using separate train, dev and test datasets
 
 If the step executes a single python file, the python file should be named
 the same as a script.
