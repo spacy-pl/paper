@@ -1,0 +1,13 @@
+md5: f1142ee68da2476c89e6b60267f78b20
+cmd: bash scripts/generate_trees_lfg.sh
+deps:
+- md5: 522769ff6c04b3519ff7a157f626c521.dir
+  path: data/raw/UD_Polish-LFG-master
+- md5: 3225760e14526e4803a6cdad8f037920
+  path: scripts/generate_trees_lfg.sh
+outs:
+- md5: 1d1aeca6b7a68c211ead8ad0a2f5342d.dir
+  path: data/processed/trees
+  cache: true
+  metric: false
+  persist: false

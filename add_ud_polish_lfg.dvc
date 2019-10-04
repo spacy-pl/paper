@@ -1,0 +1,11 @@
+md5: bd94b48881c43473a5637cf00b46e5a9
+locked: true
+deps:
+- etag: '"51c2f302f7ea9ccd68d1c647cf0b3df2088eb39d"'
+  path: https://github.com/UniversalDependencies/UD_Polish-LFG/archive/master.zip
+outs:
+- md5: 80b1f7f6898c62dd1bd6d4e8d916344d
+  path: data/raw/UD_Polish_LFG.zip
+  cache: true
+  metric: false
+  persist: false

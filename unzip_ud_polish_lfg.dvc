@@ -1,0 +1,12 @@
+md5: bd36f4b5e01c83b77c3bad28a9baf527
+cmd: unzip -d data/raw/ data/raw/UD_Polish_LFG.zip UD_Polish-LFG-master/pl_lfg-ud-dev.conllu
+  UD_Polish-LFG-master/pl_lfg-ud-test.conllu UD_Polish-LFG-master/pl_lfg-ud-train.conllu
+deps:
+- md5: 80b1f7f6898c62dd1bd6d4e8d916344d
+  path: data/raw/UD_Polish_LFG.zip
+outs:
+- md5: 522769ff6c04b3519ff7a157f626c521.dir
+  path: data/raw/UD_Polish-LFG-master
+  cache: true
+  metric: false
+  persist: false
