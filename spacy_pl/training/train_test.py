@@ -10,7 +10,7 @@ from spacy_pl.training.model import TrainParams, SpacyModel
 @click.argument("test-data", type=str)
 @click.option(
     "-o", "--output-dir", type=str, required=True,
-    help="Path to model from which vectors will be taken"
+    help="Directory to which trained model will be saved"
 )
 @click.option(
     "-p", "--pipeline", type=str, required=True,
