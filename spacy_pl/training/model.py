@@ -2,6 +2,7 @@ import json
 import os
 from shutil import rmtree
 from dataclasses import dataclass, asdict
+from pathlib import Path
 
 import spacy
 from sklearn.base import BaseEstimator
@@ -9,20 +10,33 @@ from sklearn.base import BaseEstimator
 
 @dataclass
 class TrainParams(object):
+    raw_text: Path = None
     n_iter: int = 30
-    early_stopping_iter: int = 2
+    n_early_stopping: int = 2
     n_examples: int = 0
     use_gpu: int = -1  # use -1 for CPU, 0 or 1 for GPU
+    version: str = "0.0.0"
+    meta_path: Path = None
+    init_tok2vec: Path = None
+    parser_multitasks: str = ""
+    entity_multitasks: str = ""
     noise_level: float = 0.0
-    gold_preproc: bool = True
+    orth_variant_level: float = 0.0
+    eval_beam_widths: str = ""
+    gold_preproc: bool = False
+    learn_tokens: bool = False
+    textcat_multilabel: bool = False
+    textcat_arch: str = "bow"
+    textcat_positive_label: str = None
     verbose: bool = False
+    debug: bool = False
 
 
 @dataclass
 class TestParams(object):
     # uncomment for gpu usage:
     # gpu_id: int = 1
-    gold_preproc: bool = True
+    gold_preproc: bool = False
     displacy_path: str = None
     displacy_limit: int = 25
 
@@ -45,7 +59,7 @@ class SpacyModel(BaseEstimator):
         self.lang = lang
         self.pipeline = pipeline
         self.vectors_path = vectors_path
-        self.location = location
+        self.location = Path(location)
         self.hyperparams = hyperparams
 
     @property
@@ -85,7 +99,7 @@ class SpacyModel(BaseEstimator):
             base_model = None
         else:
             # specify itself as a base model to continue training
-            base_model = self.model_path
+            base_model = Path(self.model_path)
 
         # set hyperparameters (in spacy loaded only via environment variables)
         for key in self.hyperparams:
@@ -93,12 +107,12 @@ class SpacyModel(BaseEstimator):
 
         spacy.cli.train(
             lang=self.lang,
+            output_path=Path(self.location),
+            train_path=Path(train_path),
+            dev_path=Path(dev_path),
             pipeline=self.pipeline,
-            output_path=self.location,
-            train_path=train_path,
-            dev_path=dev_path,
-            vectors=self.vectors_path,
             base_model=base_model,
+            vectors=Path(self.vectors_path),
             **asdict(train_params)
         )
 
