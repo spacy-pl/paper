@@ -1,8 +1,12 @@
 import click
+import shutil
+import os
+import spacy
 import pandas as pd
+from pathlib import Path
 
 from spacy_pl.training.model import TrainParams, SpacyModel
-
+from spacy.gold import GoldCorpus
 
 @click.command()
 @click.argument("train-data", type=str)
@@ -20,7 +24,29 @@ from spacy_pl.training.model import TrainParams, SpacyModel
     "-v", "--vectors", type=str, default="models/blank/fasttext",
     help="Path to model from which vectors will be taken"
 )
-def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vectors):
+@click.option(
+    "-r", "--refit", type=bool, default=True,
+    help="Wipe the weights of specified model out"
+)
+@click.option(
+    "--transfer_path", type=str,
+    help="Path to the model to transfer from"
+)
+def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vectors, refit, transfer_path):
+    if transfer_path:
+        from spacy.pipeline import DependencyParser
+        output_path = os.path.join(output_dir, "model-final")
+        os.mkdir(output_dir)
+        shutil.copytree(transfer_path, output_path)
+        model = spacy.load(output_path)
+        print(model.pipeline)
+        parser = model.create_pipe("parser")
+        model.add_pipe(parser, name="parser", last=True)
+        corpus = GoldCorpus(Path(train_data), Path(dev_data), limit=0)
+        model.begin_training(lambda: corpus.train_tuples)
+        print(model.pipeline)
+        model.to_disk(output_path)
+
     train_params = TrainParams(
         n_iter=5,
     )
@@ -31,7 +57,7 @@ def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vector
     }
 
     model = SpacyModel(**model_init_params)
-    model.fit(train_path=train_data, dev_path=dev_data, train_params=train_params)
+    model.fit(train_path=train_data, dev_path=dev_data, train_params=train_params, refit=refit)
 
     scores = model.score(test_data)
     scores_df = pd.DataFrame(

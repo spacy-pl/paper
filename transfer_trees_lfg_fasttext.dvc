@@ -1,0 +1,19 @@
+md5: 7f5bedfd98c8993cb23d517abea0f593
+cmd: python spacy_pl/training/train_test.py data/processed/trees/pl_lfg-ud-train.json
+  data/processed/trees/pl_lfg-ud-dev.json data/processed/trees/pl_lfg-ud-test.json
+  -p parser -o models/mixed/transfer_lfg_fasttext -r false --transfer_path models/pos/cv_nkjp_justpos_fasttext/fold-3/model-best
+deps:
+- md5: 1d1aeca6b7a68c211ead8ad0a2f5342d.dir
+  path: data/processed/trees
+- md5: 2d3d25d69da59462867e85324a3b6565.dir
+  path: spacy_pl/training
+- md5: 4a9a50f30a757eaa5a187c58948a573a.dir
+  path: models/blank/fasttext
+- md5: 326ea702e74a3b76dccc96d4a20b7d38.dir
+  path: models/pos/cv_nkjp_justpos_fasttext/fold-3/model-best
+outs:
+- md5: 9708107fb76c60801928bb871fabe796.dir
+  path: models/mixed/transfer_lfg_fasttext
+  cache: true
+  metric: false
+  persist: false
