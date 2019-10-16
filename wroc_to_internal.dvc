@@ -1,0 +1,11 @@
+md5: 076604ea122abef8b95fcce43ce270e7
+cmd: python ./spacy_pl/ner/conversion/wroc_to_raw_internal.py ./data/processed/ner/wroc_raw_internal.json
+deps:
+- md5: edb877fcf74af64289c0c32299288927.dir
+  path: data/raw/kpwr-1.1
+outs:
+- md5: 82cf4e3f5a1967b41a9708298e422c82
+  path: data/processed/ner/wroc_raw_internal.json
+  cache: true
+  metric: false
+  persist: false
