@@ -70,51 +70,6 @@ def map_labels(tokens, map):
     return tokens
 
 
-def convert_to_biluo(tokens):
-    out = []
-    in_ne = False
-    for i, token in enumerate(tokens[:-1]):
-        if in_ne:
-            if token.is_NE():
-                if tokens[i + 1].is_NE() and token.get_NE() == tokens[i + 1].get_NE():
-                    # inner NE
-                    out += [Token(token.orth, [{"I-" + token.get_NE(): '1'}], token.id)]
-                else:
-                    # last NE
-                    out += [Token(token.orth, [{"L-" + token.get_NE(): '1'}], token.id)]
-                    in_ne = False
-            else:
-                # we shouldn't ever get here
-                assert (False)
-
-        else:
-            if token.is_NE():
-                # new NE
-                if tokens[i + 1].is_NE() and token.get_NE() == tokens[i + 1].get_NE():
-                    # beginning NE
-                    out += [Token(token.orth, [{"B-" + token.get_NE(): '1'}], token.id)]
-                    in_ne = True
-                else:
-                    # unit NE
-                    out += [Token(token.orth, [{"U-" + token.get_NE(): '1'}], token.id)]
-                    in_ne = False
-            else:
-                # outside of NE
-                out += [Token(token.orth, [{"O": '1'}], token.id)]
-
-    # process last token
-    token = tokens[-1]
-    if in_ne:
-        out += [Token(token.orth, [{"L-" + token.get_NE(): '1'}], token.id)]
-    else:
-        if token.is_NE():
-            out += [Token(token.orth, [{"U-" + token.get_NE(): '1'}], token.id)]
-        else:
-            out += [Token(token.orth, [{"O": '1'}], token.id)]
-
-    return out
-
-
 def get_file_paths(index_path):
     with open(index_path) as index_file:
         files = []
@@ -171,19 +126,12 @@ def main(
         output_path,
 ):
     corpus = extract_corpus()
-    # for doc in corpus.documents:
-    #     for paragraph in doc.paragraphs:
-    #         for sent in paragraph.sentences:
-    #             sent.tokens = pick_tags(sent.tokens)
     #
     # if use_label_map:
     #     [map_labels(sent.tokens, ner_label_map) for doc in corpus.documents
     #      for paragraph in doc.paragraphs for sent in paragraph.sentences]
     #
-    # for doc in corpus.documents:
-    #     for paragraph in doc.paragraphs:
-    #         for sent in paragraph.sentences:
-    #             sent.tokens = convert_to_biluo(sent.tokens)
+
     with open(os.path.expanduser(output_path), 'w+') as f:
         json.dump(corpus.to_json(), f)
 
