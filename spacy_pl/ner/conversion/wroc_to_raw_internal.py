@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
-from ner_label_map import ner_label_map
+from spacy_pl.ner.conversion.ner_label_map import ner_label_map
+from spacy_pl.ner.conversion.data_types import *
 import json
 import os
 import click
@@ -25,79 +26,6 @@ class setCounter:
 
 def get_subdirs(dir):
     return [name for name in os.listdir(dir) if os.path.isdir(os.path.join(dir, name))]
-
-
-class Token:
-    def __init__(self, orth, attribs, id):
-        self.orth = orth
-        self.attribs = attribs
-        self.id = id
-
-    def is_NE(self):
-        return self.get_NE() is not None and self.get_NE() != "O"
-
-    def get_NE(self):
-        for attrib in self.attribs:
-            for k in attrib:
-                if attrib[k] != "0":
-                    return k
-
-        return None
-
-    def __str__(self):
-        return (self.orth + ":" + str(self.attribs))
-
-
-class Sentence:
-    def __init__(self, tokens=None):
-        self.tokens = tokens if tokens is not None else []
-
-    def add(self, token):
-        self.tokens.append(token)
-
-    def to_json(self):
-        return {'tokens': [{
-            'orth': t.orth,
-            'id': t.id,
-            'ner': t.get_NE()}
-            for t in self.tokens
-        ], 'brackets': []
-        }
-
-
-class Paragraph:
-    def __init__(self, sentences=None):
-        self.sentences = sentences if sentences is not None else []
-
-    def add(self, sentence):
-        self.sentences.append(sentence)
-
-    def to_json(self):
-        return {'sentences': [sentence.to_json() for sentence in self.sentences]}
-
-
-class Document:
-    def __init__(self, id, paragraphs=None):
-        self.id = id
-        self.paragraphs = paragraphs if paragraphs is not None else []
-
-    def add(self, paragraph):
-        self.paragraphs.append(paragraph)
-
-    def to_json(self):
-        return {'id': self.id,
-                'paragraphs': [p.to_json() for p in self.paragraphs]}
-
-
-class Corpus:
-    def __init__(self, documents=None):
-        self.documents = documents if documents is not None else []
-
-    def add(self, document):
-        self.documents.append(document)
-
-    def to_json(self):
-        return [doc.to_json() for doc in self.documents]
 
 
 def process_token(tok, id):
@@ -139,81 +67,6 @@ def map_labels(tokens, map):
     for tok in tokens:
         tok.attribs = [{map[k]: v} for attrib in tok.attribs for k, v in attrib.items()]
 
-    return tokens
-
-
-def still_in_sequence(v1, v2):
-    return any(v1e == v2e != "0" for v1e, v2e in zip(v1, v2))
-
-
-def get_last_label(v):
-    for i, e in enumerate(v):
-        if e != "0":
-            return i
-    return None
-
-
-def get_label_set(v):
-    res = set()
-    for i, e in enumerate(v):
-        if e != "0":
-            res.add(i)
-
-    return res
-
-
-import random
-
-
-def get_any_label(v):
-    if v == emptyset():
-        return None
-    return random.sample(v, 1)[0]
-
-
-def emptyset():
-    return set()
-
-
-def get_longest_sequences(tokens):
-    res = []
-    b = 0
-    e = 0
-    attribs = [k for d in tokens[0].attribs for k in d]
-    last_set = None
-    label_set = emptyset()
-    while e != len(tokens) - 1:
-        current_token = tokens[e]
-
-        if last_set == None or label_set == emptyset():
-            last_set = [v for d in current_token.attribs for k, v in d.items()]
-            label_set = get_label_set(last_set)
-            b = e
-        else:
-            new_set = [v for d in current_token.attribs for k, v in d.items()]
-            label_set = label_set.intersection(get_label_set(new_set))
-            if not still_in_sequence(last_set, new_set):
-                label_id = get_any_label(label_set)
-                if (label_id != None):
-                    label = attribs[label_id]
-                    res.append((b, e, label))
-                b = e
-                label_set = emptyset()
-
-            last_set = new_set
-        e += 1
-
-    return res
-
-
-# emptyset = set()
-def pick_tags(tokens):
-    longest_sequences = get_longest_sequences(tokens)
-    for b, e, label in longest_sequences:
-        seq = tokens[b:e]
-        for tok in seq:
-            tok.attribs = [{label: '1'}]
-        tokens[b:e] = seq
     return tokens
 
 
@@ -318,24 +171,22 @@ def main(
         output_path,
 ):
     corpus = extract_corpus()
-    for doc in corpus.documents:
-        for paragraph in doc.paragraphs:
-            for sent in paragraph.sentences:
-                sent.tokens = pick_tags(sent.tokens)
-
-    if use_label_map:
-        [map_labels(sent.tokens, ner_label_map) for doc in corpus.documents
-         for paragraph in doc.paragraphs for sent in paragraph.sentences]
-
-    for doc in corpus.documents:
-        for paragraph in doc.paragraphs:
-            for sent in paragraph.sentences:
-                sent.tokens = convert_to_biluo(sent.tokens)
+    # for doc in corpus.documents:
+    #     for paragraph in doc.paragraphs:
+    #         for sent in paragraph.sentences:
+    #             sent.tokens = pick_tags(sent.tokens)
+    #
+    # if use_label_map:
+    #     [map_labels(sent.tokens, ner_label_map) for doc in corpus.documents
+    #      for paragraph in doc.paragraphs for sent in paragraph.sentences]
+    #
+    # for doc in corpus.documents:
+    #     for paragraph in doc.paragraphs:
+    #         for sent in paragraph.sentences:
+    #             sent.tokens = convert_to_biluo(sent.tokens)
     with open(os.path.expanduser(output_path), 'w+') as f:
         json.dump(corpus.to_json(), f)
 
 
 if __name__ == "__main__":
     main()
-
-
