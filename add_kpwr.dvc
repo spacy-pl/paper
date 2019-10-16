@@ -1,0 +1,8 @@
+md5: a95939440ea1abafb27c40260461319c
+outs:
+- cache: true
+  md5: edb877fcf74af64289c0c32299288927.dir
+  metric: false
+  path: data/raw/kpwr-1.1
+  persist: false
+wdir: ../..
