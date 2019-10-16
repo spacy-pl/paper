@@ -31,13 +31,14 @@ def map_labels(tokens, map):
 
 
 @click.command()
-@click.argument("input", type=click.File('r'))
-@click.argument("output", type=click.File('w+'))
+@click.argument("input_path", type=str)
+@click.argument("output_path", type=str)
 @click.option('--label_map',
               type=click.Choice(get_available_label_maps(), case_sensitive=False),
               required=True)
-def main(input, output, label_map):
-    json_corpus = json.load(input)
+def main(input_path, output_path, label_map):
+    with open(input_path, 'r') as f:
+        json_corpus = json.load(f)
 
     corpus = Corpus.from_json(json_corpus)
 
@@ -48,7 +49,8 @@ def main(input, output, label_map):
             for sent in paragraph.sentences:
                 sent.tokens = map_labels(sent.tokens, ner_label_map)
 
-    json.dump(corpus.to_json(), output)
+    with open(output_path, 'w') as f:
+        json.dump(corpus.to_json(), f)
 
 
 if __name__ == "__main__":

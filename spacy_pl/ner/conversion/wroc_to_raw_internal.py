@@ -114,6 +114,10 @@ def extract_corpus():
 @click.argument("output_path", type=str)
 def main(output_path):
     corpus = extract_corpus()
+
+    directory = os.path.dirname(output_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     with open(os.path.expanduser(output_path), 'w+') as f:
         json.dump(corpus.to_json(), f)
 
