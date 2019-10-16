@@ -63,13 +63,6 @@ def get_all_labels_with_cardinalities(tokens):
     return labels
 
 
-def map_labels(tokens, map):
-    for tok in tokens:
-        tok.attribs = [{map[k]: v} for attrib in tok.attribs for k, v in attrib.items()]
-
-    return tokens
-
-
 def get_file_paths(index_path):
     with open(index_path) as index_file:
         files = []
@@ -119,19 +112,9 @@ def extract_corpus():
 
 
 @click.command()
-@click.option("-m", "--use-label-map", type=bool, default=False)
 @click.argument("output_path", type=str)
-def main(
-        use_label_map,
-        output_path,
-):
+def main(output_path):
     corpus = extract_corpus()
-    #
-    # if use_label_map:
-    #     [map_labels(sent.tokens, ner_label_map) for doc in corpus.documents
-    #      for paragraph in doc.paragraphs for sent in paragraph.sentences]
-    #
-
     with open(os.path.expanduser(output_path), 'w+') as f:
         json.dump(corpus.to_json(), f)
 
