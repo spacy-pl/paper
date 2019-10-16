@@ -1,5 +1,4 @@
 from spacy_pl.ner.conversion.data_types import *
-import random
 import click
 import json
 

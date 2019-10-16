@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-from spacy_pl.ner.conversion.ner_label_map import ner_label_map
 from spacy_pl.ner.conversion.data_types import *
 import json
 import os
