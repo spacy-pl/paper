@@ -1,15 +1,15 @@
-md5: 2f93b7d1c9a2e5a1134b737dfaeeac25
+md5: 0ab38557c1c356a8c8c556e7d71a334a
 cmd: python spacy_pl/training/cv.py data/processed/pos/NKJP_justpos.json models/pos/cv_nkjp_justpos_fasttext
-  -p tagger -v models/blank/fasttext -n 3
+  -p tagger -v models/blank/fasttext -n 10
 deps:
-- md5: c306ab664f6bfc845e46f49a5b44b6b5.dir
+- md5: 9e6b0245f93200c001fa46023c3fbbbd.dir
   path: spacy_pl/training
 - md5: 8d70322d7bd7d913175d767312588b87
   path: data/processed/pos/NKJP_justpos.json
-- md5: 6d6559bf880d05771e8dc388ac1de23b.dir
+- md5: 4a9a50f30a757eaa5a187c58948a573a.dir
   path: models/blank/fasttext
 outs:
-- md5: 65e6434830ddbb9e71de0b85394f455f.dir
+- md5: cf72009102852c23d2f359f3209c4f05.dir
   path: models/pos/cv_nkjp_justpos_fasttext
   cache: true
   metric: false

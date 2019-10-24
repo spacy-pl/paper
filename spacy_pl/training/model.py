@@ -5,6 +5,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 
 import spacy
+import numpy
+# import cupy
 from sklearn.base import BaseEstimator
 
 
@@ -47,7 +49,7 @@ class SpacyModel(BaseEstimator):
     which works nicely for evaluation and hyperparameter tuning.
     """
 
-    def __init__(self, pipeline: str, vectors_path: str, location: str, hyperparams: dict = dict(), lang: str = 'pl'):
+    def __init__(self, pipeline: str, vectors_path: str, location: str, base_model: str = None, hyperparams: dict = dict(), lang: str = 'pl'):
         """
         Initializes model that can be fitted or used to make predictions and evaluate itself.
         :param pipeline: pipeline that will be passed to spacy.cli.train
@@ -61,6 +63,7 @@ class SpacyModel(BaseEstimator):
         self.vectors_path = vectors_path
         self.location = Path(location)
         self.hyperparams = hyperparams
+        self.base_model_path = Path(base_model) if base_model is not None else None
 
     @property
     def best_model_path(self):
@@ -69,6 +72,14 @@ class SpacyModel(BaseEstimator):
     @property
     def final_model_path(self):
         return os.path.join(self.location, 'model-final')
+
+    @property
+    def model_path(self):
+        # models trained using older version of spaCy don't remember best iteration:
+        if os.path.exists(self.best_model_path):
+            return self.best_model_path
+        else:
+            return self.final_model_path
 
     @property
     def model_path(self):
@@ -94,12 +105,14 @@ class SpacyModel(BaseEstimator):
         :param train_params: parameters for model training, passed to CLI
         :return: self
         """
-
+        spacy.util.fix_random_seed(42)
+        numpy.random.seed(42)
+        # cupy.random.seed(42)
         if refit is True:
             base_model = None
         else:
             # specify itself as a base model to continue training
-            base_model = Path(self.model_path)
+            base_model = Path(self.base_model_path)
 
         # set hyperparameters (in spacy loaded only via environment variables)
         for key in self.hyperparams:
