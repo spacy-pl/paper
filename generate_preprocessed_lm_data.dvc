@@ -1,0 +1,13 @@
+md5: 6fceb329070e958ba3d71af3c4dc646d
+cmd: python spacy_pl/lm_data_preprocessing/preprocess.py
+deps:
+- md5: 8f14cd001f87ab7d41c51a1e3622a74b
+  path: data/raw/language_model_training_data.txt
+- md5: 13aa040c7e220a2340c9147740927e28
+  path: spacy_pl/lm_data_preprocessing/preprocess.py
+outs:
+- md5: c6f5b4d1a5290780a0acb4ba74ac59f3
+  path: data/processed/lm/language_model_training_data.jsonl
+  cache: true
+  metric: false
+  persist: false

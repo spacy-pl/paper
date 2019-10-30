@@ -1,0 +1,7 @@
+md5: 6e872cafda92fae84400749f4f0b9978
+outs:
+- md5: 8f14cd001f87ab7d41c51a1e3622a74b
+  path: data/raw/language_model_training_data.txt
+  cache: true
+  metric: false
+  persist: false
