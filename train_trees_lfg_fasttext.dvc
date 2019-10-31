@@ -1,16 +1,16 @@
-md5: a4be5879c3ca7f996d7c279f02621e5f
+md5: e6792950a78238b54a783952f86e98a8
 cmd: python spacy_pl/training/train_test.py data/processed/trees/pl_lfg-ud-train.json
   data/processed/trees/pl_lfg-ud-dev.json data/processed/trees/pl_lfg-ud-test.json
   -p parser -o models/trees/train_lfg_fasttext
 deps:
 - md5: 1d1aeca6b7a68c211ead8ad0a2f5342d.dir
   path: data/processed/trees
-- md5: 02f906184f38033fe1a57af9ed85bb47.dir
+- md5: e192602d3d6749dca07cf8ed90b96085.dir
   path: spacy_pl/training
 - md5: 4a9a50f30a757eaa5a187c58948a573a.dir
   path: models/blank/fasttext
 outs:
-- md5: af1ddd0a96ac4177151438726f5d524b.dir
+- md5: b0d739b90ca76a818293843c35ee4f05.dir
   path: models/trees/train_lfg_fasttext
   cache: true
   metric: false

@@ -10,6 +10,7 @@ from tempfile import TemporaryDirectory
 from spacy_pl.training.model import TrainParams, SpacyModel
 from spacy.gold import GoldCorpus
 
+
 @click.command()
 @click.argument("train-data", type=str)
 @click.argument("dev-data", type=str)
@@ -34,12 +35,15 @@ from spacy.gold import GoldCorpus
     "--transfer_path", type=str,
     help="Path to the model to transfer from"
 )
+def main(train_data, dev_data, test_data, output_dir, pipeline, vectors, refit, transfer_path):
+    run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vectors, refit, transfer_path)
+
+
 def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vectors, refit, transfer_path):
     spacy.util.fix_random_seed(42)
     numpy.random.seed(42)
     tmpdir = TemporaryDirectory()
     if transfer_path:
-        from spacy.pipeline import DependencyParser
         model = spacy.load(transfer_path)
         parser = model.create_pipe("parser")
         model.add_pipe(parser, name="parser", last=True)
@@ -71,4 +75,4 @@ def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vector
 
 
 if __name__ == '__main__':
-    run_train_test()
+    main()
