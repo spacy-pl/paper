@@ -40,10 +40,24 @@ def main(train_data, dev_data, test_data, output_dir, pipeline, vectors, refit, 
 
 
 def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vectors, refit, transfer_path):
+    model = run_train(train_data, dev_data, output_dir, pipeline, vectors, refit, transfer_path)
+
+    scores = model.score(test_data)
+    scores_df = pd.DataFrame(
+        {"test_data": test_data, "model_location": model.location, **scores}, index=[0]
+    )
+    with pd.option_context("display.max_rows", 10, "display.max_columns", 20):
+        print(scores_df)
+
+    return scores_df
+
+
+def run_train(train_data, dev_data, output_dir, pipeline, vectors, refit, transfer_path):
     spacy.util.fix_random_seed(42)
     numpy.random.seed(42)
-    tmpdir = TemporaryDirectory()
+    tmpdir = None
     if transfer_path:
+        tmpdir = TemporaryDirectory(prefix=transfer_path.strip().split("/")[-2] + "_")
         model = spacy.load(transfer_path)
         parser = model.create_pipe("parser")
         model.add_pipe(parser, name="parser", last=True)
@@ -58,20 +72,12 @@ def run_train_test(train_data, dev_data, test_data, output_dir, pipeline, vector
         "pipeline": pipeline,
         "vectors_path": vectors,
         "location": output_dir,
-        "base_model": tmpdir.name,
+        "base_model": tmpdir.name if tmpdir is not None else None,
     }
 
     model = SpacyModel(**model_init_params)
     model.fit(train_path=train_data, dev_path=dev_data, train_params=train_params, refit=refit)
-
-    scores = model.score(test_data)
-    scores_df = pd.DataFrame(
-        {"test_data": test_data, "model_location": model.location, **scores}, index=[0]
-    )
-    with pd.option_context("display.max_rows", 10, "display.max_columns", 20):
-        print(scores_df)
-
-    return scores_df
+    return model
 
 
 if __name__ == '__main__':
