@@ -77,7 +77,7 @@ This way we'll create a nice knowledge base and speed up our work in the future.
 1. `pip install -r requirements.txt` to install dvc (and other dependencies)
 2. Find the google cloud key (let's name it `gc-key.json`) and place it in `path/to/a/folder/of/your/choice/`
 3. In a shell from which you wish to use dvc, run `export GOOGLE_APPLICATION_CREDENTIALS=path/to/a/folder/of/your/choice/gc-key.json`
-   (on Windows, in CMD, run: `set GOOGLE_APPLICATION_CREDENTIALS=path/to/a/folder/of/your/choice/gc-key.json`) 
+   (on Windows, in CMD, run: `set GOOGLE_APPLICATION_CREDENTIALS=path/to/a/folder/of/your/choice/gc-key.json`)    
    
 Extra TIP: If you're using pycharm, make sure to [mark .dvc folder as excluded](https://stackoverflow.com/a/6535511) - otherwise it will keep indexing your dvc files (including cache).
 
@@ -118,16 +118,16 @@ from nltk to spacy format (for the selected NKJP POS tags). To do this:
     - all paths are relative to repository root folder (including python imports)
     - this step can also be performed with dvc, but since we don't care about result at first, why bother?
 4. Now I can run it with dvc:
-   `dvc run -d data/raw/NKJP_1.2_nltk -d spacy_pl/tagset -o data/processed/tagset -f generate_tagset_and_conversion_map.dvc python spacy_pl/tagset/generate_tagset_and_conversion_map.py`,
+   `dvc run -d data/raw/NKJP_1.2_nltk -d spacy_pl/tagset -o data/processed/tagset -f generate_pos_NKJP_justpos.dvc python spacy_pl/tagset/generate_tagset_and_conversion_map.py`,
    note that:
     - I ran this from root folder of repository
     - even though I was running just one script, I specified entire module `spacy_pl/tagset` as dependency, as it contains related code
     - I output more than one file, so instead of listing them all, I group them by putting inside one folder
     - I specified the name of dvc file using conventions described above
 5. After the script ends successfully, we can add and commit our changes:
-    - `git add spacy_pl/tagset generate_tagset_and_conversion_map.dvc data/processed/.gitignore`
+    - `git add spacy_pl/tagset generate_pos_NKJP_justpos.dvc data/processed/.gitignore`
     - make sure the data file itself (`data/processed/tagset`) is ignored in git, ie. doesn't show up in `git status` output
-    - check if it works: `dvc repro generate_tagset_and_conversion_map.dvc` - should print something like "stage didn't change, using cache"
+    - check if it works: `dvc repro generate_pos_NKJP_justpos.dvc` - should print something like "stage didn't change, using cache"
     - `git commit`
     - `dvc push -j 1` push your changes as early as possible to prevent problems later, `-j 1` option tells dvc to use 1 thread 
     - `git push`
@@ -146,7 +146,7 @@ Assuming your're on the right branch (ie. the models' dvc file exists on it).
 For example, for pulling cross-validation of pos-only tagger using fasttext vectors:
 
 1. `dvc pull`
-2. `dvc repro cv-pos-nkjp-justpos-fasttext.dvc`
+2. `dvc repro cv_pos_nkjp_justpos_fasttext.dvc`
 
 
 ### How can I re-train a model?
@@ -154,7 +154,7 @@ Assuming your're on the right branch (ie. the models' dvc file exists on it).
 For example, ro re-run the cross-validation of pos-only tagger using fasttext vectors:
 
 1. `dvc pull`
-2. View the dependency tree of pos tagger: `dvc pipeline show --ascii cv-pos-nkjp-justpos-fasttext.dvc`
+2. View the dependency tree of pos tagger: `dvc pipeline show --ascii cv_pos_nkjp_justpos_fasttext.dvc`
 3. For each immediate dependency, run `dvc repro dependency-name.dvc`
 4. Make your changes to the code
 5. To track the training results, follow steps from *How to run experiment that I just wrote?* described above
