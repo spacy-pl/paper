@@ -1,0 +1,14 @@
+md5: eb199b74c6c7d1c52e736ceda8773dd1
+cmd: python spacy_pl/lemmatizer/convert_ispell_to_json_rules.py data/raw/ispell_rules/polish.aff
+  data/processed/lemmatizer/rules_ispell_flags.json
+deps:
+- md5: b281dd4f3bcbce480d1d9d64a8c34305
+  path: data/raw/ispell_rules/polish.aff
+- md5: f3e94e0d423cd803101eb033deedef15
+  path: spacy_pl/lemmatizer/convert_ispell_to_json_rules.py
+outs:
+- md5: 3070dff0734df37a2d18178fc9bd5db5
+  path: data/processed/lemmatizer/rules_ispell_flags.json
+  cache: true
+  metric: false
+  persist: false

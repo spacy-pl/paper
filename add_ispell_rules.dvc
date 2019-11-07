@@ -1,7 +1,7 @@
 md5: 3d6b55a807b25fca96b5205c984cf029
 outs:
 - md5: b281dd4f3bcbce480d1d9d64a8c34305
-  path: data/raw/ispell_rules/polish.aff
+  path: data/raw/ispell_rules/
   cache: true
   metric: false
   persist: false
