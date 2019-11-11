@@ -1,0 +1,14 @@
+md5: 7063cb0bd44ad7c2e0125f3a6053ac86
+cmd: python spacy_pl/lemmatizer/build_lemma_index.py data/raw/ispell_rules/polish.all
+  data/processed/lemmatizer/index_ispell_flags.json
+deps:
+- md5: f9fbc7ef33f439aa49a9a4aad928799e
+  path: spacy_pl/lemmatizer/build_lemma_index.py
+- md5: b02c4a35631cc294bd73561338c86535
+  path: data/raw/ispell_rules/polish.all
+outs:
+- md5: 3f1c3439aba8bf1806501aae7f508ca1
+  path: data/processed/lemmatizer/index_ispell_flags.json
+  cache: true
+  metric: false
+  persist: false

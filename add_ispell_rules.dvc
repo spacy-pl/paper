@@ -1,0 +1,7 @@
+md5: 793828bbb5984ca162e1abac03b37d9b
+outs:
+- md5: dff0bc16061f776b7bb612def6876e60.dir
+  path: data/raw/ispell_rules
+  cache: true
+  metric: false
+  persist: false
