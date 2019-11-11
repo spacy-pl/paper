@@ -1,4 +1,4 @@
-md5: e34eee324d8e876585293d3379a7e65a
+md5: 84cd109799039106323da1d348bb7de0
 cmd: python spacy_pl/lemmatizer/map_flags_to_pos.py data/processed/lemmatizer/rules_ispell_flags.json
   data/processed/lemmatizer/rules_pos.json
 deps:
@@ -6,6 +6,8 @@ deps:
   path: data/processed/lemmatizer/rules_ispell_flags.json
 - md5: e550b73c7b72508f59f936352f055a1c
   path: spacy_pl/lemmatizer/map_flags_to_pos.py
+- md5: fc1d8a2cf36c6cb1e9dd02c2c2b45df8
+  path: spacy_pl/lemmatizer/maps/flag_to_pos.py
 outs:
 - md5: 84f6f3f0b9d9d97b8affa915e3cbbfe6
   path: data/processed/lemmatizer/rules_pos.json
