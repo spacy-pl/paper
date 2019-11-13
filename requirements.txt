@@ -1,3 +1,5 @@
+tqdm
+conll_df
 pandas
 sklearn
 spacy
