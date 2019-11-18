@@ -1,0 +1,12 @@
+cmd: python spacy_pl/evaluation/evaluate_stanford_nlp_parser.py --save_dir data/stanfordnlp-resources/pl_lfg_models
+  --eval_file data/raw/UD_Polish-LFG-master/pl_lfg-ud-test.conllu
+  --output_file pl.pred.ete.conllu --lang pl --shorthand pl_lfg --mode predict
+  --batch_size 256 --gold_file data/raw/UD_Polish-LFG-master/pl_lfg-ud-test.conllul
+deps:
+- md5: 1d1aeca6b7a68c211ead8ad0a2f5342d.dir
+  path: data/raw/UD_Polish-LFG-master/pl_lfg-ud-test.conllu
+- md5: c99d28ca9b2a9ccb77268cc86141016a.dir
+  path: spacy_pl/evaluation/evaluate_stanford_nlp_parser.py
+outs:
+- md5: 1d1aeca6b7a68c211ead8ad0a2f5342d.dir
+  path: data/stanfordnlp-resources/pl_lfg_models
